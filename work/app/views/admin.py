@@ -7,6 +7,8 @@ from app.views.utils import check_auth, check_missing_params
 from app.controllers.User import delete_user, get_user_by_keyword, update_user
 from app.controllers.Admin_info import update_admin_info, add_admin_info, delete_admin_info, get_all_admin_info
 from app.controllers.Borrow_info import get_borrow_count_byid
+from app.controllers.Admin_operation_record import add_admin_operation_record
+
 # 模糊查询用户
 @views_bp.route('/api/admin/user_page', methods=['GET'])
 @jwt_required()
@@ -53,7 +55,8 @@ def admin_delete_user():
     check_missing_params(data,['user_id'])
     # 删除用户
     try:
-        delete_user(data['user_id'])
+        delete_user(data['user_id'], commit_now=False)
+        add_admin_operation_record(admin_id=get_jwt_identity(), affected_user_id=data['user_id'], affected_admin_id=None, content='删除用户', reason='无', commit_now=True)
         return jsonify({'code': 200, 'message': '删除成功'})
     except Exception as e:
         return jsonify({'code': 400, 'message': '用户存在使用记录，无法删除'})
@@ -95,7 +98,8 @@ def s_delete_admin():
     check_missing_params(data,['admin_id'])
     # 删除管理员
     try:
-        delete_admin_info(data['admin_id'])
+        delete_admin_info(data['admin_id'], commit_now=False)
+        add_admin_operation_record(admin_id=get_jwt_identity(), affected_user_id=None, affected_admin_id=data['admin_id'], content='删除管理员', reason='无', commit_now=True)
         return jsonify({'code': 200, 'message': '删除成功'})
     except Exception as e:
         print('--------Error-删除管理员--------\n', e, '\n------------------------------')

@@ -6,7 +6,7 @@ from app.views.utils import check_auth, check_user_id, check_missing_params
 
 from app.controllers.Recharge_deduction_record import add_recharge_deduction_record , get_recharge_deduction_record_details
 from app.controllers.User import update_user, get_user
-
+from app.controllers.Admin_operation_record import add_admin_operation_record
 # 查充值记录
 @views_bp.route('/api/recharge/page', methods=['GET'])
 @jwt_required()
@@ -55,7 +55,8 @@ def add_recharge_deduction_record_api():
     try:
         user = get_user(user_id)
         update_user(user_id=user_id, balance=float(user.balance)+value, commit_now=False)
-        add_recharge_deduction_record(user_id, get_jwt_identity(), value, reason)
+        add_recharge_deduction_record(user_id, get_jwt_identity(), value, reason, commit_now=False)
+        add_admin_operation_record(admin_id=get_jwt_identity(), affected_user_id=user_id, affected_admin_id=None, content='充值扣款: '+str(value)+' 元', reason='无', commit_now=True)
         return jsonify({'code': 200, 'message': '充值扣款成功'})
     except Exception as e:
         print('--------Error-添加充值扣款记录--------\n', e, '\n------------------------------')

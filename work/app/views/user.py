@@ -11,12 +11,13 @@ from app.controllers.Admin_info import get_admin_info
 @views_bp.route('/api/user/register', methods=['POST'])
 def register():
     '''
-    注册必备信息包括：姓名、性别、类型、联系方式、密码, 
+    注册必备信息包括：姓名、性别、类型、联系方式,
+    密码默认1234569 
     余额默认、借阅数量、借阅时间默认0
     ID 由系统分配，教师 T 开头 6 位，研究生 G 开头 6 位，本科生 B 开头 10 位，其他 O 开头 10 位
     '''
     data = request.get_json()
-    check_missing_params(data,['type','name','gender','contact','password'])
+    check_missing_params(data,['type','name','gender','contact'])
     # 添加用户
     try:
         user_id = add_user(   
@@ -42,8 +43,7 @@ def login():
     登录信息: user_id、密码
     返回 token,  每次登录会更新, 需要在请求头中带上, 用于身份(user_id)验证
     '''
-    print('---------',request)
-    print('---------',request.get_json())
+
     data = request.get_json()
     check_missing_params(data,['user_id','password'])
 

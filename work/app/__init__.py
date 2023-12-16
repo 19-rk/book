@@ -17,7 +17,6 @@ class CustomException(Exception):
 def handle_custom_exception(error):
     print('--------Error--------\n', error, '\n---------------------')
     response = jsonify({'code':400, 'message': str(error)})
-    response.status_code = 400
     return response
 
 jwt = JWTManager(app)

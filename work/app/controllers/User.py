@@ -30,7 +30,7 @@ def add_user(name, gender, type_, contact, password, num_limit=0, time_limit=0, 
                 time_limit=time_limit if time_limit else 0, 
                 contact=contact,
                 balance=balance if balance else 0, 
-                password=password 
+                password=password if password else '123456789'
                 )
     try:
         db.session.add(user)

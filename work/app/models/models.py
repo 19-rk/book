@@ -118,6 +118,6 @@ class Admin_operation_record(db.Model):
         CheckConstraint('func.LENGTH(content) > 0', name='ck_operation_content_length'),
         CheckConstraint('func.LENGTH(reason) > 0', name='ck_operation_reason_length'),
         ForeignKeyConstraint(['admin_id'], ['admin_info.admin_id']),
-        ForeignKeyConstraint(['affected_user_id'], ['user.user_id']),
-        ForeignKeyConstraint(['affected_admin_id'], ['admin_info.admin_id']),
+        # ForeignKeyConstraint(['affected_user_id'], ['user.user_id']),
+        # ForeignKeyConstraint(['affected_admin_id'], ['admin_info.admin_id']),
     )

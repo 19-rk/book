@@ -66,6 +66,7 @@ def get_book_info_by_keyword(keyword='', page=1, per_page=10):
         keyword = ''
         
     query = db.session.query(Book_info, Book_category).join(Book_category, Book_info.category_code == Book_category.code)
+    query = query.filter(Book_info.status != '下架')
     books = query.filter(Book_info.title.like('%' + keyword + '%') |
                          Book_info.author.like('%' + keyword + '%')|
                          Book_info.publisher.like('%' + keyword + '%') |
